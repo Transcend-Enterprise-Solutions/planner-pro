@@ -346,7 +346,7 @@ class SafetyHealthMonthlyReportExport implements WithEvents
         $row = $this->currentRow += 2;
 
         $sheet->mergeCells("A{$row}:D{$row}");
-        $sheet->setCellValue("A{$row}", "Deseases Recorded this Month");
+        $sheet->setCellValue("A{$row}", "Diseases Recorded this Month");
         $sheet->setCellValue("E{$row}", "No. of Cases");
         $sheet->mergeCells("F{$row}:H{$row}");
         $sheet->setCellValue("F{$row}", "Treatment");
@@ -357,7 +357,7 @@ class SafetyHealthMonthlyReportExport implements WithEvents
         $sheet->mergeCells("M{$row}:N{$row}");
         $sheet->setCellValue("M{$row}", "Severity Rate");
         $sheet->mergeCells("O{$row}:P{$row}");
-        $sheet->setCellValue("O{$row}", "Incindent Rate");
+        $sheet->setCellValue("O{$row}", "Incident Rate");
 
 
         $sheet->getRowDimension($row)->setRowHeight(20); 
@@ -394,25 +394,25 @@ class SafetyHealthMonthlyReportExport implements WithEvents
             ],
         ]);
 
-        $this->getDeseases($sheet, $row);
+        $this->getDiseases($sheet, $row);
     }
 
-    private function getDeseases($sheet, $row){
+    private function getDiseases($sheet, $row){
         $this->currentRow = $row + 1;
-        $injuredPersonnel = $this->filters['injuredPersonnel'];
+        $injuredPersonnel = $this->filters['injuredPersonnel'] ?: 0;
 
         // Frequency
-        $frequencyRate = ($this->cumulative['Lost Time Accident (Non-Fatal)'] + 
-                          $this->cumulative['Lost Time Accident (Fatal)']) / 
-                          $this->cumulative['Manhours Worked'] * 1000000;
+        $frequencyRate = (($this->cumulative['Lost Time Accident (Non-Fatal)'] ?: 0) + 
+                          ($this->cumulative['Lost Time Accident (Fatal)'] ?: 0)) / 
+                          ($this->cumulative['Manhours Worked'] ?: 0) * 1000000;
 
-        $severityRate = $this->cumulative['Days Lost'] / 
-                        $this->cumulative['Manhours Worked'] * 1000000;
+        $severityRate = ($this->cumulative['Days Lost'] ?: 0) / 
+                        ($this->cumulative['Manhours Worked'] ?: 0) * 1000000;
 
-        $incidentRate = ($this->cumulative['Non-Lost Time Accident'] + 
-                        $this->cumulative['Lost Time Accident (Non-Fatal)'] +
-                        $this->cumulative['Lost Time Accident (Fatal)']) * 200000 / 
-                        $this->cumulative['Manhours Worked'];
+        $incidentRate = (($this->cumulative['Non-Lost Time Accident'] ?: 0) + 
+                        ($this->cumulative['Lost Time Accident (Non-Fatal)'] ?: 0) +
+                        ($this->cumulative['Lost Time Accident (Fatal)'] ?: 0)) * 200000 / 
+                        ($this->cumulative['Manhours Worked'] ?: 0);
 
         $sheet->mergeCells("K{$this->currentRow}:L{$this->currentRow}");
         $sheet->setCellValue("K{$this->currentRow}", number_format((float)$frequencyRate,2, '.', ','));
@@ -434,11 +434,11 @@ class SafetyHealthMonthlyReportExport implements WithEvents
 
         // Process deseases
         foreach ($injuredPersonnel['monthlyDeseases'] as $desease) {
-            $this->addDeseaseRow($sheet, $desease);
+            $this->addDiseaseRow($sheet, $desease);
         }
     }
 
-    private function addDeseaseRow($sheet, $desease){
+    private function addDiseaseRow($sheet, $desease){
         $sheet->mergeCells("A{$this->currentRow}:D{$this->currentRow}");
         $sheet->setCellValue("A{$this->currentRow}", $desease->desease);
         $sheet->setCellValue("E{$this->currentRow}", $desease->no_of_cases);
