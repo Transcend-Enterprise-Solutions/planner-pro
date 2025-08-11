@@ -17,7 +17,7 @@ class CheckRole
                 return $next($request);
             }
 
-            if ($user->user_role === 'client') {
+            if ($user->user_role === 'user') {
                 return redirect()->route('home');
             } else {
                 return redirect()->route('dashboard');

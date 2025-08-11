@@ -2,18 +2,17 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Contracts\LoginResponse;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
-
+#[Layout('layouts.authentication')]
+#[Title('Plantilla Payroll')]
 class Login extends Component
 {
-    public $email;
+     public $email;
     public $password;
     public $showPassword = false;
     public $remember = false;
@@ -35,24 +34,19 @@ class Login extends Component
         if (Auth::attempt($credentials, $this->remember)) {
             $user = Auth::user();
 
-            if ($user->user_role === 'client') {
-                return app(LoginResponse::class)->toResponse($this->request)->intended('/home');
-            } else {
-                return app(LoginResponse::class)->toResponse($this->request)->intended('/dashboard');
+            if ($user->user_role === 'user') {
+                return redirect()->intended('home');
+            } else if (in_array($user->user_role, ['sa'])) {
+                return redirect()->intended('dashboard');
             }
         } else {
             $this->addError('login', 'Invalid credentials.');
         }
     }
 
+
     public function render()
     {
-        return view('auth.login');
-    }
-
-    public function togglePasswordVisibility()
-    {
-        $this->showPassword = !$this->showPassword;
+        return view('livewire.login');
     }
 }
-

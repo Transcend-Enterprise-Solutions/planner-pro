@@ -29,8 +29,6 @@ class User extends Authenticatable
         'password',
         'user_role',
         'active_status',
-        'company_name',
-        'registrant_name',
         'profile_photo_path',
     ];
 
@@ -48,20 +46,6 @@ class User extends Authenticatable
         'two_factor_secret',
     ];
 
-    public function cpMonthlyReports()
-    {
-        return $this->hasMany(CpMonthlyReports::class);
-    }
-
-    public function quarterlyEmergencyDrillReports()
-    {
-        return $this->hasMany(QuarterlyEmergencyDrillReports::class);
-    }
-
-    public function permits()
-    {
-        return $this->hasMany(Permits::class);
-    }
 
     /**
      * The attributes that should be cast.
@@ -86,10 +70,7 @@ class User extends Authenticatable
     public function scopeSearch($query, $term){
         $term = "%$term%";
         $query->where(function ($query) use ($term) {
-            $query->where('users.name', 'like', $term)
-                ->orWhere('users.company_name', 'like', $term)
-                ->orWhere('users.registrant_name', 'like', $term);
+            $query->where('users.name', 'like', $term);
         });
     }
-
 }

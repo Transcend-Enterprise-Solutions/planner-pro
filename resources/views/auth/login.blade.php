@@ -1,115 +1,392 @@
 <x-authentication-layout>
     <style>
-        @keyframes slideInLeft {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 0.75rem;
+        }
+
+        @keyframes fadeInUp {
             from {
-                transform: translateX(-100%);
+                transform: translateY(30px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
-        .animate-slide-in-left {
-            opacity: 0;
-            transform: translateX(-100%);
-            animation: slideInLeft 0.5s ease-out forwards;
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
-        .animate-slide-in-left-delay-1 {
-            opacity: 0;
-            transform: translateX(-100%);
-            animation: slideInLeft 0.5s ease-out 0.05s forwards;
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
         }
 
-        .animate-slide-in-left-delay-2 {
+        .animate-fade-in-up-delay-1 {
             opacity: 0;
-            transform: translateX(-100%);
-            animation: slideInLeft 0.4s ease-out 0.1s forwards;
+            animation: fadeInUp 0.6s ease-out 0.1s forwards;
+        }
+
+        .animate-fade-in-up-delay-2 {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.2s forwards;
+        }
+
+        .animate-fade-in-up-delay-3 {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.3s forwards;
+        }
+
+        .animate-scale-in {
+            opacity: 0;
+            animation: scaleIn 0.5s ease-out 0.4s forwards;
+        }
+
+        /* Modern form input styling */
+        .glass-input {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .glass-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Modern label styling */
+        .glass-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        /* Modern button styling */
+        .glass-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .glass-button:hover::before {
+            left: 100%;
+        }
+
+        .glass-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .glass-button:active {
+            transform: translateY(0);
+        }
+
+        .glass-button-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass-button-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Checkbox styling */
+        .glass-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .glass-checkbox:checked {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        .glass-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Links */
+        .glass-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .glass-link:hover {
+            color: white;
+            text-decoration-color: white;
+        }
+
+        /* Status and error messages */
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: rgba(34, 197, 94, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Password visibility toggle */
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Form spacing */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
         }
     </style>
 
-    <!-- Welcome Message -->
-    <h1 class="text-3xl text-slate-800 font-bold mb-6 animate-slide-in-left">
-        {{ __('The Mine SHOP') }}
-    </h1>
+    <!-- Logo -->
+    <div class="logo-container">
+        <div class="logo-icon">
+            <i class="bi bi-diagram-3"></i>
+        </div>
+        <span class="brand-text">PlannerPro</span>
+    </div>
+
+    <!-- Form Header -->
+    <h2 class="form-title">Welcome Back</h2>
+    <p class="form-subtitle text-sm" style="margin-top:-10px">Sign in to continue to your projects</p>
 
     @if (session('status'))
         <!-- Status Message -->
-        <div class="mb-4 font-medium text-sm text-green-600 animate-slide-in-left-delay-1">
+        <div class="success-message animate-fade-in-up">
+            <i class="bi bi-check-circle me-2"></i>
             {{ session('status') }}
         </div>
     @endif
 
     <!-- Form -->
-    <form method="POST" wire:submit.prevent='login' class="animate-slide-in-left-delay-2">
+    <form method="POST" wire:submit.prevent='login' class="animate-fade-in-up-delay-1">
         @csrf
-        <div class="space-y-4 w-full">
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" type="email" name="email" :value="old('email')" required autofocus class="w-full h-12 px-4 py-2 text-black border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm" />
-            </div>
-            <div class="relative w-full" x-data="{ show: false }">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" x-bind:type="show ? 'text' : 'password'" name="password" required
-                    autocomplete="current-password" wire:model.live="password"
-                    class="w-full h-12 px-4 py-2 text-black border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm" />
-                <button type="button" class="absolute top-1/2 right-0 px-3 flex items-center text-sm leading-5"
-                    @click="show = !show">
-                    <i x-bind:class="show ? 'bi bi-eye' : 'bi bi-eye-slash'" class="text-lg text-gray-500"></i>
-                </button>
-                @error('password')
-                    <span class="text-red-500 text-sm mt-1">This field is required!</span>
+        <div class="space-y-6">
+            <!-- Email Field -->
+            <div class="form-group animate-fade-in-up-delay-1">
+                <label for="email" class="glass-label text-sm">
+                    <i class="bi bi-envelope me-2"></i>Email Address
+                </label>
+                <input 
+                    id="email" 
+                    type="email" 
+                    name="email" 
+                    value="{{ old('email') }}" 
+                    required 
+                    autofocus 
+                    placeholder="Enter your email"
+                    class="text-sm glass-input w-full h-12 px-4 py-3"
+                />
+                @error('email')
+                    <div class="error-message mt-2 text-xs text-white">{{ $message }}</div>
                 @enderror
             </div>
-            <!-- Remember Me Checkbox -->
-            <div class="flex items-center justify-between w-full mt-6">
-                <!-- Remember Me Checkbox -->
+
+            <!-- Password Field -->
+            <div class="form-group animate-fade-in-up-delay-2" x-data="{ showPassword: false }">
+                <label for="password" class="glass-label text-sm">
+                    <i class="bi bi-lock me-2"></i>Password
+                </label>
+                <div class="relative">
+                    <input 
+                        id="password" 
+                        x-bind:type="showPassword ? 'text' : 'password'" 
+                        name="password" 
+                        required
+                        autocomplete="current-password" 
+                        wire:model.live="password"
+                        placeholder="Enter your password"
+                        class="text-sm glass-input w-full h-12 px-4 py-3 pr-12"
+                    />
+                    <button 
+                        type="button" 
+                        class="password-toggle"
+                        @click="showPassword = !showPassword"
+                    >
+                        <i x-bind:class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <div class="error-message mt-2 text-xs text-white">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="flex items-center justify-between animate-fade-in-up-delay-2">
                 <div class="flex items-center">
                     <input
                         id="remember_me"
                         type="checkbox"
                         wire:model.defer="remember"
-                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        class="glass-checkbox"
                     />
-                    <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
-                        {{ __('Remember me') }}
+                    <label for="remember_me" class="glass-link ml-3 text-sm">
+                        Remember me
                     </label>
                 </div>
 
-                <!-- Forgot Password Link -->
                 @if (Route::has('password.request'))
-                    <a class="text-sm underline hover:no-underline text-gray-900 dark:text-gray-300" href="{{ route('password.request') }}">
-                        {{ __('Forgot Password?') }}
+                    <a href="{{ route('password.request') }}" class="glass-link text-sm">
+                        <i class="bi bi-question-circle me-1"></i>Forgot password?
                     </a>
                 @endif
             </div>
         </div>
 
-        <!-- Buttons Row -->
-        <div class="flex items-center space-x-4 mt-6">
-            
-            <x-button type="submit">
-                {{ __('Sign in') }}
-            </x-button>
-            
-           
-            <div class="ml-4">
-            <x-button>
-            <a href="{{ route('register') }}">
-                {{ __('Register') }}
-            </a>
-            </x-button>
+        <!-- Form Actions -->
+        <div class="form-actions animate-fade-in-up-delay-3">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="glass-button flex-1">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    Sign In
+                </button>
+                
+                <a href="{{ route('register') }}" class="glass-button-secondary flex-1">
+                    <i class="bi bi-person-plus me-2"></i>
+                    Create Account
+                </a>
             </div>
         </div>
     </form>
 
-    <x-validation-errors class="mt-4" />
+    <!-- Validation Errors -->
+    @if ($errors->any())
+        <div class="error-message mt-4 animate-fade-in-up-delay-3">
+            <div class="font-medium text-sm text-white">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Please correct the following errors:
+            </div>
+            <ul class="mt-2 list-disc list-inside text-xs text-white">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     @error('login')
-        <span class="text-red-500 animate-slide-in-left-delay-2">
+        <div class="error-message mt-4 animate-fade-in-up-delay-3">
+            <i class="bi bi-x-circle me-2"></i>
             {{ $message }}
-        </span>
+        </div>
     @enderror
+
 </x-authentication-layout>

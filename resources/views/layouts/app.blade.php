@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="/images/mgar-logo.png" type="image/x-icon">
+    <link rel="icon" href="/images/logo.png" type="image/x-icon">
 
-    <title>The Mine SHOP</title>
+    <title>{{ isset($title) ? 'Planner Pro | ' . $title : 'Planner Pro' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@
     <script defer src="build/assets/app-D9BebNPI.js"></script>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="build/assets/app--UUk-3lr.css">
+    <link rel="stylesheet" href="build/assets/app-X1NAzlM8.css">
 
     <style>
         [x-cloak] {

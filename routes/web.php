@@ -1,42 +1,25 @@
 <?php
 
+use App\Livewire\ProjectManagement;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Livewire\Registration;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 
-Route::redirect('/', '/login');
-Route::get('/register', function () {
-    return view('registeraccount'); })->name('register');
+Route::redirect('/', '/login')->name('login');
+Route::get('/register', Registration::class)->name('register');
 
 
-/* Admin account role */
-Route::middleware(['auth', 'checkrole:admin'])->group(function () {
+Route::middleware(['auth', 'checkrole:sa'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/clients', function () {
-        return view('livewire.clients'); })->name('clients');
-    Route::get('/monthly-reports', function () {
-        return view('livewire.report'); })->name('monthly-reports');
-    Route::get('/quarterly-reports', function () {
-        return view('livewire.quarterly-report'); })->name('quarterly-reports');
-    Route::get('/admin-reports', function () {
-        return view('livewire.admin-reports-index'); })->name('admin-reports');
-    Route::get('/accident-reports', function () {
-        return view('livewire.accident'); })->name('accident-reports');
-    Route::get('/explosive-reports', function () {
-        return view('livewire.explosive'); })->name('explosive-reports');
+    Route::get('/project-management', ProjectManagement::class)->name('project-management');
 });
 
-/* Client account role */
-Route::middleware(['auth', 'checkrole:client'])->group(function () {
-    Route::get('/home', function () {
-        return view('livewire.home'); })->name('home');
-    Route::get('/monthly-report', function () {
-        return view('livewire.report'); })->name('monthly-report');
-    Route::get('/quarterly-report', function () {
-        return view('livewire.quarterly-report'); })->name('quarterly-report');
+
+Route::middleware(['auth', 'checkrole:user'])->group(function () {
+
 });
 
 Route::get('/profile-photo/{filename}', function ($filename) {
