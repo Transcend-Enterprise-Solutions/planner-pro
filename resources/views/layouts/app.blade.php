@@ -29,7 +29,7 @@
     <script defer src="build/assets/app-D9BebNPI.js"></script>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="build/assets/app-X1NAzlM8.css">
+    <link rel="stylesheet" href="build/assets/app-ylCcG2Wq.css">
 
     <style>
         [x-cloak] {
