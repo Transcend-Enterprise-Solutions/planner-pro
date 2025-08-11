@@ -34,7 +34,7 @@
                             <a class="flex items-center" href="{{ route('dashboard') }}">
                                 <img class="mx-auto rounded-full" src="/images/logo.png" alt="mgar logo" width="45">
                                 <span
-                                    class="text-black dark:text-white ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">PlannerPro</span>
+                                    class="text-black dark:text-white ml-2 duration-200">PlannerPro</span>
                             </a>
                         </div>
                     </li>
