@@ -206,7 +206,8 @@
             }
             
             .auth-content {
-                padding: 2rem;
+                padding: 0;
+                width: 100%;
             }
         }
 
